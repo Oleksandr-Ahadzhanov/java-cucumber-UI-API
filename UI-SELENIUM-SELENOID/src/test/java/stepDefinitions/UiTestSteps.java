@@ -3,11 +3,10 @@ package stepDefinitions;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import org.junit.Assert;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import pageObjects.main.page.AccountPage;
-import pageObjects.main.page.MainPage;
+import pageObjects.pages.AccountPage;
+import pageObjects.pages.MainPage;
+import pageObjects.pages.ShoppingCartPage;
 import util.driver.Driver;
 import util.properties.PropertiesReader;
 
@@ -21,6 +20,7 @@ public class UiTestSteps {
     WebDriver driver;
     MainPage mainPage;
     AccountPage accountPage;
+    ShoppingCartPage shoppingCartPage;
 
     @Given("I launch the browser")
     public void activateTheDriver() {
@@ -61,25 +61,47 @@ public class UiTestSteps {
     public void openCatalogAndAddItemToCart() {
         mainPage = new MainPage(driver);
         mainPage.openURL(mainPageURL);
-        mainPage
-                .navigateToWomenTopBarOption()
-                .tapOnSummerDressesButton();
+        mainPage.navigateToWomenTopBarOption()
+                .tapOnSummerDressesButton()
+                .addFirstProductToCart();
 
     }
     @When("I can see proceed to checkout popup and I tap on proceed to checkout button")
     public void proceedThroughCheckoutPopup() {
-//        mainPage = new MainPage(driver);
-//        mainPage.openURL(mainPageURL);
-//        mainPage.tapTheSignInButton();
-//
-//        accountPage = new AccountPage(driver);
-//        accountPage
-//                .enterCredentials()
-//                .pressSubmitButton();
+        mainPage.checkIfPopupIsDisplayed()
+                .tapOnProceedToCheckoutButton();
     }
     @Then("The item with specific SKU is added to cart")
     public void checkIfProductIsAddedToCart() {
-//        accountPage.checkAccountTitle();
+        shoppingCartPage = new ShoppingCartPage(driver);
+        shoppingCartPage.checkIfSpecificSKUisAddedToCart();
+    }
+
+    //work with tables
+    @When("I add a few items into the cart and open it")
+    public void addTwoItemsIntoTheCart() {
+        mainPage = new MainPage(driver);
+        mainPage.openURL(mainPageURL);
+        mainPage.navigateToWomenTopBarOption()
+                .tapOnSummerDressesButton()
+                .addFirstProductToCart()
+                .tapOnContinueShoppingButton()
+                .addSecondProductToCart()
+                .tapOnProceedToCheckoutButton();
+
+    }
+    @When("Increase second item quantity to 2")
+    public void increaseItemsQuantity() {
+        shoppingCartPage = new ShoppingCartPage(driver);
+        shoppingCartPage.priceBefore = shoppingCartPage.checkProductTotalPrice();
+        shoppingCartPage.increaseSecondItemQuantityToTwo();
+        shoppingCartPage.priceAfter = shoppingCartPage.checkProductTotalPrice();
+
+    }
+
+    @Then("The total prise of the item is doubled")
+    public void checkIfTotalPriceIsDoubled() {
+        shoppingCartPage.checkIfTotalPriseIsDoubled();
     }
 
     @Then("Close the browser")

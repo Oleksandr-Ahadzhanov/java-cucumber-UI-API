@@ -12,3 +12,10 @@ Feature: User flows
     And I can see proceed to checkout popup and I tap on proceed to checkout button
     Then The item with specific SKU is added to cart
     And Close the browser
+
+  Scenario: Test if I can work with tables in Shopping Cart
+    Given I launch the browser
+    When I add a few items into the cart and open it
+    And Increase second item quantity to 2
+    Then The total prise of the item is doubled
+    And Close the browser
