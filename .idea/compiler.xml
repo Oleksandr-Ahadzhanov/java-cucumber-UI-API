@@ -8,6 +8,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="UI-SELENIUM-SELENOID" />
+        <module name="API-RESTASSURED" />
       </profile>
     </annotationProcessing>
   </component>

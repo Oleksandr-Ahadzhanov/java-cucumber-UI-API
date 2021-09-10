@@ -10,6 +10,7 @@
     <version>1.0-SNAPSHOT</version>
     <modules>
         <module>UI-SELENIUM-SELENOID</module>
+        <module>API-RESTASSURED</module>
     </modules>
 
     <properties>
